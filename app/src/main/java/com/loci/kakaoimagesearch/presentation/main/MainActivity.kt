@@ -16,11 +16,9 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
-
         initNavigationBar()
         binding.bottomNavigationBar.selectedItemId = R.id.homeItem
         setFragment(SearchFragment())
-
 
     }
 
