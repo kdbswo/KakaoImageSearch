@@ -1,9 +1,10 @@
-package com.loci.kakaoimagesearch
+package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.loci.kakaoimagesearch.R
 import com.loci.kakaoimagesearch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

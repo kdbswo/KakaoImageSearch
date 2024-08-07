@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".presentation.main.SearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ct_search_layout"
@@ -21,11 +21,12 @@
             android:layout_width="250dp"
             android:layout_height="40dp"
             android:layout_margin="10dp"
+            android:autofillHints="name"
             android:background="@drawable/shape_corner_radius"
-            android:hint="검색"
+            android:hint="@string/search"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:paddingStart="10dp"
+            android:paddingHorizontal="10dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +48,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="검색"
+                android:text="@string/search"
                 android:layout_margin="5dp"
                 android:textAlignment="center"
                 android:textSize="18sp"
