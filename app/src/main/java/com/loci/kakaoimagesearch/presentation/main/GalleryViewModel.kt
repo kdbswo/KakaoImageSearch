@@ -21,6 +21,7 @@ class GalleryViewModel(context: Context) : ViewModel() {
         val list = pref.getString("gallery", "[]")
         val convertedList = list?.let { convertStringToSearchImageEntity(it) }
         convertedList?.let { setGalleryList(it) }
+
     }
 
     fun setGalleryList(list: List<SearchImageEntity>) {

@@ -10,8 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.loci.kakaoimagesearch.databinding.FragmentSearchBinding
-import com.loci.kakaoimagesearch.util.convertStringToSearchImageEntity
-import com.loci.kakaoimagesearch.util.jsonListToString
 
 
 class SearchFragment : Fragment() {
@@ -31,16 +29,13 @@ class SearchFragment : Fragment() {
 
     private lateinit var query: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        galleryViewModel.loadGalleryList(requireContext())
+        Log.d("onCreateView", galleryViewModel.galleryList.toString())
+
         return binding.root
     }
 
@@ -68,23 +63,17 @@ class SearchFragment : Fragment() {
         searchViewModel.getSearchImageList.observe(viewLifecycleOwner) { searchImageList ->
             searchListViewAdapter.submitList(searchImageList)
         }
+        Log.d("onViewCreated", galleryViewModel.galleryList.toString())
 
-        Log.d("gallery",galleryViewModel.galleryList.value.toString())
 
     }
 
     override fun onDestroyView() {
         _binding = null
-//        saveData()
+        Log.d("onDestroyView", galleryViewModel.galleryList.toString())
+
         super.onDestroyView()
     }
 
-//    private fun saveData() {
-//        val pref = requireContext().getSharedPreferences("pref", 0)
-//        val edit = pref.edit()
-//        val stringList = jsonListToString(galleryViewModel.galleryList)
-//        edit.putString("gallery", stringList)
-//        edit.apply()
-//    }
 
 }

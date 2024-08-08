@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         galleryViewModel.loadGalleryList(this@MainActivity)
         initNavigationBar()
         binding.bottomNavigationBar.selectedItemId = R.id.homeItem
-        setFragment(SearchFragment())
+        setFragment(searchFragment)
 
     }
 
