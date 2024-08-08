@@ -15,6 +15,7 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
     private val _getSearchImageList: MutableLiveData<List<SearchImageEntity>> = MutableLiveData()
     val getSearchImageList: LiveData<List<SearchImageEntity>> get() = _getSearchImageList
 
+
     fun getSearchImageList(query: String) = viewModelScope.launch {
         _getSearchImageList.value = searchRepository.getSearchImageList(query, 1)?.items
     }

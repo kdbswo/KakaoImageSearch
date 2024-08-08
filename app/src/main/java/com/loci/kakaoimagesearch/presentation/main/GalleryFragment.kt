@@ -1,16 +1,22 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
 import com.loci.kakaoimagesearch.databinding.FragmentGalleryBinding
+import com.loci.kakaoimagesearch.util.convertStringToSearchImageEntity
+import com.loci.kakaoimagesearch.util.jsonListToString
+import java.util.Date
 
 
 class GalleryFragment : Fragment() {
@@ -18,9 +24,11 @@ class GalleryFragment : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!
 
-    private val galleryViewModel by viewModels<GalleryViewModel> {
-        GalleryViewModelFactory()
+    private val galleryViewModel by activityViewModels<GalleryViewModel> {
+        GalleryViewModelFactory(requireActivity())
     }
+
+    private val galleryListViewAdapter by lazy { SearchListViewAdapter() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,42 +40,34 @@ class GalleryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadData()
+
+        binding.rvGalleryList.adapter = galleryListViewAdapter
+        binding.rvGalleryList.layoutManager = GridLayoutManager(this.context, 2)
+
+
+
+        galleryViewModel.galleryList.observe(viewLifecycleOwner) { galleryList ->
+            galleryListViewAdapter.submitList(galleryList)
+            Log.d("conver", galleryList.toString())
+
+        }
 
     }
-
 
     override fun onDestroyView() {
-        saveData()
         _binding = null
         super.onDestroyView()
+
     }
 
-    private fun saveData() {
+    private fun loadData() {
         val pref = requireContext().getSharedPreferences("pref", 0)
-        val edit = pref.edit()
-        val stringList = jsonListToString(galleryViewModel.galleryList)
-        edit.putString("gallery", stringList)
-        edit.apply()
-    }
-
-    private fun loadData(){
-        val pref = requireContext().getSharedPreferences("pref", 0)
-        val list = pref.getString("gallery","")
-        val convertedList = list?.let { convertToSearchImageEntity(it) }
+        val list = pref.getString("gallery", "[]")
+        val convertedList = list?.let { convertStringToSearchImageEntity(it) }
         convertedList?.let { galleryViewModel.setGalleryList(it) }
+        Log.d("con",convertedList.toString())
     }
 
-    private fun convertToSearchImageEntity(data: String): List<SearchImageEntity>? {
-        val gson = Gson()
-        val itemType = object : TypeToken<List<SearchImageEntity>>() {}.type
-        return gson.fromJson<List<SearchImageEntity>>(data, itemType)
-    }
-
-    private fun jsonListToString(liveData: LiveData<List<SearchImageEntity>>): String {
-        val gson = Gson()
-        return gson.toJson(liveData)
-    }
 
 
 }

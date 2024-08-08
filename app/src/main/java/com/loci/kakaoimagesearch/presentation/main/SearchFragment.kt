@@ -1,13 +1,17 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.loci.kakaoimagesearch.databinding.FragmentSearchBinding
+import com.loci.kakaoimagesearch.util.convertStringToSearchImageEntity
+import com.loci.kakaoimagesearch.util.jsonListToString
 
 
 class SearchFragment : Fragment() {
@@ -21,17 +25,22 @@ class SearchFragment : Fragment() {
         SearchViewModelFactory()
     }
 
-    private val galleryViewModel by viewModels<GalleryViewModel> {
-        GalleryViewModelFactory()
+    private val galleryViewModel by activityViewModels<GalleryViewModel> {
+        GalleryViewModelFactory(requireActivity())
     }
 
     private lateinit var query: String
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        galleryViewModel.loadGalleryList(requireContext())
         return binding.root
     }
 
@@ -51,6 +60,7 @@ class SearchFragment : Fragment() {
             override fun onClick(v: View, position: Int) {
                 val searchItem = searchViewModel.returnSearchItem(position)
                 searchItem?.let { galleryViewModel.addGalleryList(it) }
+
             }
 
         })
@@ -59,11 +69,22 @@ class SearchFragment : Fragment() {
             searchListViewAdapter.submitList(searchImageList)
         }
 
+        Log.d("gallery",galleryViewModel.galleryList.value.toString())
+
     }
 
     override fun onDestroyView() {
         _binding = null
+//        saveData()
         super.onDestroyView()
     }
+
+//    private fun saveData() {
+//        val pref = requireContext().getSharedPreferences("pref", 0)
+//        val edit = pref.edit()
+//        val stringList = jsonListToString(galleryViewModel.galleryList)
+//        edit.putString("gallery", stringList)
+//        edit.apply()
+//    }
 
 }

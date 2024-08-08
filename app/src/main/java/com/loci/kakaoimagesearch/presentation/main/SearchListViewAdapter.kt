@@ -53,6 +53,8 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
 
     private lateinit var itemClickListener: OnItemClickListener
 
+
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<SearchImageEntity>() {
             override fun areItemsTheSame(
