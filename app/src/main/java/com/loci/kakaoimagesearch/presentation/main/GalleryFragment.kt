@@ -30,49 +30,12 @@ class GalleryFragment : Fragment() {
 
     private val galleryListViewAdapter by lazy { SearchListViewAdapter() }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("onCreateG", galleryViewModel.galleryList.toString())
-
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("onStartG", galleryViewModel.galleryList.toString())
-
-    }
-
-    override fun onResume() {
-        Log.d("onResumeG", galleryViewModel.galleryList.toString())
-        super.onResume()
-    }
-
-    override fun onPause() {
-        Log.d("onPauseG", galleryViewModel.galleryList.toString())
-        super.onPause()
-    }
-
-    override fun onStop() {
-        Log.d("onStopG", galleryViewModel.galleryList.toString())
-        super.onStop()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("onSaveInstanceStateG", galleryViewModel.galleryList.toString())
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        Log.d("onDestroyG", galleryViewModel.galleryList.toString())
-        super.onDestroy()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-        Log.d("onCreateViewG", galleryViewModel.galleryList.toString())
         return binding.root
     }
 
@@ -85,18 +48,15 @@ class GalleryFragment : Fragment() {
 
         galleryViewModel.galleryList.observe(viewLifecycleOwner) { galleryList ->
             galleryListViewAdapter.submitList(galleryList)
-            Log.d("converG", galleryList.toString())
 
         }
 
-        Log.d("onViewCreatedG", galleryViewModel.galleryList.toString())
 
 
     }
 
     override fun onDestroyView() {
         _binding = null
-        Log.d("onDestroyViewG", galleryViewModel.galleryList.toString())
 
         super.onDestroyView()
 
@@ -107,7 +67,6 @@ class GalleryFragment : Fragment() {
         val list = pref.getString("gallery", "[]")
         val convertedList = list?.let { convertStringToSearchImageEntity(it) }
         convertedList?.let { galleryViewModel.setGalleryList(it) }
-        Log.d("conG",convertedList.toString())
     }
 
 

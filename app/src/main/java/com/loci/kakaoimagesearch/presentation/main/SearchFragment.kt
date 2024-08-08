@@ -1,7 +1,6 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +33,6 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        Log.d("onCreateView", galleryViewModel.galleryList.toString())
 
         return binding.root
     }
@@ -63,14 +61,12 @@ class SearchFragment : Fragment() {
         searchViewModel.getSearchImageList.observe(viewLifecycleOwner) { searchImageList ->
             searchListViewAdapter.submitList(searchImageList)
         }
-        Log.d("onViewCreated", galleryViewModel.galleryList.toString())
 
 
     }
 
     override fun onDestroyView() {
         _binding = null
-        Log.d("onDestroyView", galleryViewModel.galleryList.toString())
 
         super.onDestroyView()
     }

@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         val pref = getSharedPreferences("pref", 0)
         val edit = pref.edit()
         val stringList = jsonListToString(galleryViewModel.galleryList)
-        Log.d("end", stringList)
         edit.putString("gallery", stringList)
         edit.apply()
     }
