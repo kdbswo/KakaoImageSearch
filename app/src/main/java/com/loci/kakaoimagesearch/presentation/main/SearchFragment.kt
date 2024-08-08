@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.loci.kakaoimagesearch.databinding.FragmentSearchBinding
+import com.loci.kakaoimagesearch.util.convertStringToSearchImageEntity
 
 
 class SearchFragment : Fragment() {
@@ -44,6 +45,8 @@ class SearchFragment : Fragment() {
             Log.d("q", query)
             downKeyboard(requireActivity(), binding.etSearch)
         }
+
+        binding.etSearch.setText(loadQuery())
         return binding.root
     }
 
@@ -58,6 +61,8 @@ class SearchFragment : Fragment() {
                 searchItem?.let { galleryViewModel.addGalleryList(it) }
 
                 searchViewModel.updateIsLike(position)
+
+
             }
 
         })
@@ -66,19 +71,45 @@ class SearchFragment : Fragment() {
             searchListViewAdapter.submitList(searchImageList)
             Log.d("list", searchImageList.toString())
         }
-
     }
+
+    override fun onPause() {
+        saveQuery(binding.etSearch.text.toString())
+
+        super.onPause()
+    }
+
 
     override fun onDestroyView() {
         _binding = null
-
         super.onDestroyView()
     }
 
-    private fun downKeyboard(context: Context, et: EditText){
-        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun downKeyboard(context: Context, et: EditText) {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         et.clearFocus()
         inputMethodManager.hideSoftInputFromWindow(et.windowToken, 0)
+    }
+
+    private fun saveQuery(query: String) {
+        val pref = requireContext().getSharedPreferences("pref", 0)
+        val edit = pref.edit()
+        edit.putString("query", query)
+        edit.apply()
+
+    }
+
+    private fun loadQuery(): String? {
+        val pref = requireContext().getSharedPreferences("pref", 0)
+        return pref.getString("query", "")
+    }
+
+    private fun loadData() {
+        val pref = requireContext().getSharedPreferences("pref", 0)
+        val list = pref.getString("gallery", "[]")
+        val convertedList = list?.let { convertStringToSearchImageEntity(it) }
+        convertedList?.let { galleryViewModel.setGalleryList(it) }
     }
 
 
