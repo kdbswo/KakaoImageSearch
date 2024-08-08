@@ -21,6 +21,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
+        <ImageView
+            android:id="@+id/iv_isLiked_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/heart_shape"
+            android:layout_margin="15dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_search_title"
             android:layout_width="match_parent"

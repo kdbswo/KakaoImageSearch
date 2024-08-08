@@ -15,7 +15,6 @@ class GalleryViewModel(context: Context) : ViewModel() {
     val galleryList: LiveData<List<SearchImageEntity>> get() = _galleryList
 
 
-
     fun loadGalleryList(context: Context) {
         val pref = context.getSharedPreferences("pref", 0)
         val list = pref.getString("gallery", "[]")
@@ -35,12 +34,20 @@ class GalleryViewModel(context: Context) : ViewModel() {
         _galleryList.value = currentList
     }
 
-    fun removeGallery(gallery: SearchImageEntity) {
-        val currentList = _galleryList.value?.toMutableList() ?: mutableListOf()
-        currentList.remove(gallery)
-        _galleryList.value = currentList
+    fun returnGalleryData(index: Int): SearchImageEntity? {
+        val currentList = _galleryList.value
+        return currentList?.getOrNull(index)
     }
 
+    fun removeGallery(index: Int) {
+        val currentList = _galleryList.value?.toMutableList() ?: mutableListOf()
+        if (index in 0 until currentList.size) {
+            currentList.removeAt(index)
+        }
+
+        _galleryList.value = currentList
+
+    }
 
 
 }

@@ -39,7 +39,7 @@
             android:background="@drawable/shape_corner_radius"
             android:backgroundTint="#2196F3"
             android:layout_margin="10dp"
-
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/et_search"

@@ -28,6 +28,10 @@ class GalleryFragment : Fragment() {
         GalleryViewModelFactory(requireActivity())
     }
 
+    private val searchViewModel by activityViewModels<SearchViewModel> {
+        SearchViewModelFactory()
+    }
+
     private val galleryListViewAdapter by lazy { SearchListViewAdapter() }
 
 
@@ -45,12 +49,23 @@ class GalleryFragment : Fragment() {
         binding.rvGalleryList.adapter = galleryListViewAdapter
         binding.rvGalleryList.layoutManager = GridLayoutManager(this.context, 2)
 
+        galleryListViewAdapter.setItemClickListener(object :
+            SearchListViewAdapter.OnItemClickListener {
+            override fun onClick(v: View, position: Int) {
+                val data = galleryViewModel.returnGalleryData(position)
+                val setData = data?.copy(isLiked = true)
+                setData?.let { searchViewModel.removeLike(it) }
+//                val item = galleryViewModel.returnGalleryData(position)
+//                val itemPosition = item?.let { searchViewModel.getPosition(it) }
+//                itemPosition?.let { searchViewModel.updateIsLike(it) }
+                galleryViewModel.removeGallery(position)
+            }
+        })
 
         galleryViewModel.galleryList.observe(viewLifecycleOwner) { galleryList ->
             galleryListViewAdapter.submitList(galleryList)
 
         }
-
 
 
     }
@@ -59,7 +74,6 @@ class GalleryFragment : Fragment() {
         _binding = null
 
         super.onDestroyView()
-
     }
 
     private fun loadData() {
@@ -68,7 +82,6 @@ class GalleryFragment : Fragment() {
         val convertedList = list?.let { convertStringToSearchImageEntity(it) }
         convertedList?.let { galleryViewModel.setGalleryList(it) }
     }
-
 
 
 }

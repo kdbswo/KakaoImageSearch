@@ -3,6 +3,7 @@ package com.loci.kakaoimagesearch.presentation.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
                 Glide.with(itemView.context).load(item.thumbnailUrl).into(ivSearchThumbnail)
                 tvSearchTitle.text = item.displaySitName
                 tvSearchDate.text = dateToStringFormat(item.datetime)
+                ivIsLikedIcon.isVisible = item.isLiked
             }
         }
     }
@@ -52,7 +54,6 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
     }
 
     private lateinit var itemClickListener: OnItemClickListener
-
 
 
     companion object {
