@@ -1,6 +1,7 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
 import com.loci.kakaoimagesearch.databinding.ItemSearchBinding
 import com.loci.kakaoimagesearch.presentation.main.SearchListViewAdapter.SearchListViewHolder
+import com.loci.kakaoimagesearch.util.dateToStringFormat
 
 class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolder>(diffUtil) {
 
@@ -18,7 +20,7 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
             binding.apply {
                 Glide.with(itemView.context).load(item.thumbnailUrl).into(ivSearchThumbnail)
                 tvSearchTitle.text = item.displaySitName
-                tvSearchDate.text = item.datetime.toString()
+                tvSearchDate.text = dateToStringFormat(item.datetime)
             }
         }
     }
@@ -36,7 +38,20 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
     override fun onBindViewHolder(holder: SearchListViewHolder, position: Int) {
         val item = currentList[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
     }
+
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+
+    private lateinit var itemClickListener: OnItemClickListener
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<SearchImageEntity>() {

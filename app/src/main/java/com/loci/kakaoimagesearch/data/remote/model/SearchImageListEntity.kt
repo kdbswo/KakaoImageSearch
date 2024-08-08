@@ -4,4 +4,8 @@ import java.util.Date
 
 data class SearchImageListEntity(val items: List<SearchImageEntity>)
 
-data class SearchImageEntity(val thumbnailUrl: String, val displaySitName: String, val datetime: Date)
+data class SearchImageEntity(
+    val thumbnailUrl: String,
+    val displaySitName: String,
+    val datetime: Date
+)
