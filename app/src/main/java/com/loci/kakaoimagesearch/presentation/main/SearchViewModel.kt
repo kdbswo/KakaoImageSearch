@@ -19,6 +19,11 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         _getSearchImageList.value = searchRepository.getSearchImageList(query, 1)?.items
     }
 
+    fun returnSearchItem(index: Int): SearchImageEntity? {
+        val list = _getSearchImageList.value
+        return list?.get(index)
+    }
+
 }
 
 

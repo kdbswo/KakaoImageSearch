@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -21,6 +20,11 @@ class SearchFragment : Fragment() {
     private val searchViewModel by viewModels<SearchViewModel> {
         SearchViewModelFactory()
     }
+
+    private val galleryViewModel by viewModels<GalleryViewModel> {
+        GalleryViewModelFactory()
+    }
+
     private lateinit var query: String
 
     override fun onCreateView(
@@ -45,7 +49,8 @@ class SearchFragment : Fragment() {
         searchListViewAdapter.setItemClickListener(object :
             SearchListViewAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
-                Toast.makeText(view.context, "$position", Toast.LENGTH_SHORT).show()
+                val searchItem = searchViewModel.returnSearchItem(position)
+                searchItem?.let { galleryViewModel.addGalleryList(it) }
             }
 
         })

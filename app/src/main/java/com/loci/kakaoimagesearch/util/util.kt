@@ -1,9 +1,5 @@
 package com.loci.kakaoimagesearch.util
 
-import androidx.lifecycle.LiveData
-import com.google.gson.Gson
-import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
-import com.loci.kakaoimagesearch.data.remote.model.SearchImageListEntity
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
