@@ -7,13 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import com.loci.kakaoimagesearch.databinding.FragmentSearchBinding
+import com.loci.kakaoimagesearch.network.RetrofitClient
+import kotlinx.coroutines.launch
 
 
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
+    private val searchListViewAdapter by lazy { SearchListViewAdapter() }
 
     private val searchViewModel by viewModels<SearchViewModel> {
         SearchViewModelFactory()
@@ -30,11 +36,13 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.rvMainSearchList.adapter = searchListViewAdapter
+        binding.rvMainSearchList.layoutManager = GridLayoutManager(this.context, 2)
+
         searchViewModel.getSearchImageList()
 
         searchViewModel.getSearchImageList.observe(viewLifecycleOwner) { searchImageList ->
-            Log.d("debug100", searchImageList.toString())
-
+            searchListViewAdapter.submitList(searchImageList)
         }
 
     }
