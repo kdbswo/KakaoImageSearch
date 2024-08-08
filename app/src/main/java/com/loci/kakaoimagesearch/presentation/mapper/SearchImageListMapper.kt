@@ -17,7 +17,8 @@ fun List<SearchDocument>.asSearchImageEntity(): List<SearchImageEntity> {
         SearchImageEntity(
             it.thumbnailUrl ?: "",
             it.displaySiteName ?: "",
-            it.datetime
+            it.datetime,
+            false
         )
     }
 }

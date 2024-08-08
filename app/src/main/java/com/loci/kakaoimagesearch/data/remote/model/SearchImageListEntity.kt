@@ -7,5 +7,6 @@ data class SearchImageListEntity(val items: List<SearchImageEntity>)
 data class SearchImageEntity(
     val thumbnailUrl: String,
     val displaySitName: String,
-    val datetime: Date
+    val datetime: Date,
+    val isLiked: Boolean = false
 )

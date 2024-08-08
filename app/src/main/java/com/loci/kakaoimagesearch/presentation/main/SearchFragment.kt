@@ -1,6 +1,7 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +27,7 @@ class SearchFragment : Fragment() {
         GalleryViewModelFactory(requireActivity())
     }
 
-    private lateinit var query: String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,8 +45,9 @@ class SearchFragment : Fragment() {
         binding.rvMainSearchList.layoutManager = GridLayoutManager(this.context, 2)
 
         binding.ctSearchButton.setOnClickListener {
-            query = binding.etSearch.text.toString()
+            val query = binding.etSearch.text.toString()
             searchViewModel.getSearchImageList(query)
+            Log.d("q", query)
         }
 
         searchListViewAdapter.setItemClickListener(object :
@@ -61,7 +63,6 @@ class SearchFragment : Fragment() {
         searchViewModel.getSearchImageList.observe(viewLifecycleOwner) { searchImageList ->
             searchListViewAdapter.submitList(searchImageList)
         }
-
 
     }
 

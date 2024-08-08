@@ -7,6 +7,7 @@
     tools:context=".presentation.main.GalleryFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
         android:id="@+id/rv_gallery_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
