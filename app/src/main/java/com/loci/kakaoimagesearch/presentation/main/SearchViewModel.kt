@@ -24,14 +24,16 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
             val imageList = searchRepository.getSearchImageList(query, 1)?.items
             val clipList = searchRepository.getSearchClipList(query, 1)?.items
 
-            val totalList : MutableList<TotalEntity> = mutableListOf()
+            val totalList: MutableList<TotalEntity> = mutableListOf()
             imageList?.let { totalList.addAll(it) }
             clipList?.let { totalList.addAll(it) }
             Log.d("get", searchRepository.getSearchImageList(query, 1)?.items.toString())
 
+           totalList.sortBy { it.datetime }
             _getSearchImageList.value = totalList
         }
     }
+
 
     fun getSearchClipList(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
