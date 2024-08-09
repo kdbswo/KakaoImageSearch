@@ -42,12 +42,22 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         }
     }
 
-    fun removeLike(data: SearchImageEntity){
-        val currentList = _getSearchImageList.value?.toMutableList() ?: mutableListOf()
-        val index = currentList.indexOf(data)
-        val currentItem = data.copy(isLiked = false)
-        currentList[index] = currentItem
-        _getSearchImageList.value = currentList
+    fun removeLike(removeUuid: String) {
+        val currentList = getSearchImageList.value?.toMutableList() ?: mutableListOf()
+//        currentList.removeAll { it.uuid == removeUuid }
+        val removeIndex = currentList.indexOfFirst { it.uuid == removeUuid }
+        if (removeIndex != -1) {
+            val item = currentList[removeIndex]
+            val updatedItem = item.copy(isLiked = false)
+            currentList[removeIndex] = updatedItem
+            _getSearchImageList.value = currentList
+
+        }
+
+
+//        val index = currentList.indexOf(data)
+//        val currentItem = data.copy(isLiked = false)
+//        currentList[index] = currentItem
     }
 
     fun getPosition(data: SearchImageEntity): Int? {

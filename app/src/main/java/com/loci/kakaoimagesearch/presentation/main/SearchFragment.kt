@@ -57,10 +57,19 @@ class SearchFragment : Fragment() {
         searchListViewAdapter.setItemClickListener(object :
             SearchListViewAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
-                val searchItem = searchViewModel.returnSearchItem(position)
-                searchItem?.let { galleryViewModel.addGalleryList(it) }
 
-                searchViewModel.updateIsLike(position)
+                val searchItem = searchViewModel.returnSearchItem(position)
+                if (searchItem != null) {
+                    if (searchItem.isLiked){
+                        searchViewModel.updateIsLike(position)
+                        galleryViewModel.removeGallery(searchItem.uuid)
+                    }else{
+                        searchItem?.let { galleryViewModel.addGalleryList(it) }
+                        searchViewModel.updateIsLike(position)
+
+                    }
+                }
+
 
 
             }

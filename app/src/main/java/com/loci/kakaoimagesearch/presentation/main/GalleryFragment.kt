@@ -54,11 +54,8 @@ class GalleryFragment : Fragment() {
             override fun onClick(v: View, position: Int) {
                 val data = galleryViewModel.returnGalleryData(position)
                 val setData = data?.copy(isLiked = true)
-                setData?.let { searchViewModel.removeLike(it) }
-//                val item = galleryViewModel.returnGalleryData(position)
-//                val itemPosition = item?.let { searchViewModel.getPosition(it) }
-//                itemPosition?.let { searchViewModel.updateIsLike(it) }
-                galleryViewModel.removeGallery(position)
+                setData?.let { searchViewModel.removeLike(it.uuid) }
+                data?.let { galleryViewModel.removeGallery(it.uuid) }
             }
         })
 

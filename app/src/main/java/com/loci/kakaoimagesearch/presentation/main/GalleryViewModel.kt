@@ -29,24 +29,25 @@ class GalleryViewModel(context: Context) : ViewModel() {
     }
 
     fun addGalleryList(gallery: SearchImageEntity) {
-        val currentList = _galleryList.value?.toMutableList() ?: mutableListOf()
+        val currentList = galleryList.value?.toMutableList() ?: mutableListOf()
         currentList.add(gallery)
         _galleryList.value = currentList
     }
 
     fun returnGalleryData(index: Int): SearchImageEntity? {
-        val currentList = _galleryList.value
+        val currentList = galleryList.value
         return currentList?.getOrNull(index)
     }
 
-    fun removeGallery(index: Int) {
-        val currentList = _galleryList.value?.toMutableList() ?: mutableListOf()
-        if (index in 0 until currentList.size) {
-            currentList.removeAt(index)
-        }
-
+    fun removeGallery(removeUuid: String) {
+        val currentList = galleryList.value?.toMutableList() ?: mutableListOf()
+        currentList.removeAll{it.uuid == removeUuid}
         _galleryList.value = currentList
+    }
 
+    fun includeData(data: SearchImageEntity): Boolean {
+        val currentList = galleryList.value?.toMutableList() ?: mutableListOf()
+        return currentList.contains(data)
     }
 
 
