@@ -5,10 +5,10 @@ import java.util.Date
 data class SearchClipListEntity(val items: List<SearchClipEntity>)
 
 data class SearchClipEntity(
-    val uuid: String,
-    val searchType: String,
-    val title: String,
-    val thumbnailUrl: String,
-    val datetime: Date,
-    val isLiked: Boolean = false
-)
+    override val uuid: String,
+    override val searchType: String,
+    override val title: String,
+    override val thumbnailUrl: String,
+    override val datetime: Date,
+    override val isLiked: Boolean = false
+) : TotalEntity

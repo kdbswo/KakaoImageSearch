@@ -8,19 +8,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
+import com.loci.kakaoimagesearch.data.remote.model.TotalEntity
 import com.loci.kakaoimagesearch.databinding.ItemSearchBinding
 import com.loci.kakaoimagesearch.presentation.main.SearchListViewAdapter.SearchListViewHolder
 import com.loci.kakaoimagesearch.util.dateToStringFormat
 
-class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolder>(diffUtil) {
+class SearchListViewAdapter : ListAdapter<TotalEntity, SearchListViewHolder>(diffUtil) {
 
     class SearchListViewHolder(private val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: SearchImageEntity) {
+        fun bind(item: TotalEntity) {
             binding.apply {
                 Glide.with(itemView.context).load(item.thumbnailUrl).into(ivSearchThumbnail)
-                tvSearchTitle.text = item.displaySitName
+                tvSearchTitle.text = item.title
                 tvSearchDate.text = dateToStringFormat(item.datetime)
                 ivIsLikedIcon.isVisible = item.isLiked
             }
@@ -57,17 +57,17 @@ class SearchListViewAdapter : ListAdapter<SearchImageEntity, SearchListViewHolde
 
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<SearchImageEntity>() {
+        val diffUtil = object : DiffUtil.ItemCallback<TotalEntity>() {
             override fun areItemsTheSame(
-                oldItem: SearchImageEntity,
-                newItem: SearchImageEntity
+                oldItem: TotalEntity,
+                newItem: TotalEntity
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: SearchImageEntity,
-                newItem: SearchImageEntity
+                oldItem: TotalEntity,
+                newItem: TotalEntity
             ): Boolean {
                 return oldItem == newItem
             }

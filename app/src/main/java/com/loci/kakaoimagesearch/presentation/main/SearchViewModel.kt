@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.loci.kakaoimagesearch.data.remote.model.SearchClipEntity
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
+import com.loci.kakaoimagesearch.data.remote.model.TotalEntity
 import com.loci.kakaoimagesearch.data.remote.repository.SearchRepository
 import com.loci.kakaoimagesearch.data.remote.repository.SearchRepositoryImpl
 import com.loci.kakaoimagesearch.network.RetrofitClient
@@ -16,8 +18,8 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
-    private val _getSearchImageList: MutableLiveData<List<SearchImageEntity>> = MutableLiveData()
-    val getSearchImageList: LiveData<List<SearchImageEntity>> get() = _getSearchImageList
+    private val _getSearchImageList: MutableLiveData<List<TotalEntity>> = MutableLiveData()
+    val getSearchImageList: LiveData<List<TotalEntity>> get() = _getSearchImageList
 
     fun getSearchImageList(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
@@ -26,7 +28,13 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         }
     }
 
-    fun returnSearchItem(index: Int): SearchImageEntity? {
+    fun getSearchClipList(query: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+
+        }
+    }
+
+    fun returnSearchItem(index: Int): TotalEntity? {
         val list = getSearchImageList.value
         return list?.get(index)
     }
@@ -35,9 +43,17 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         val list = getSearchImageList.value
         list?.let {
             val updatedList = it.toMutableList()
-            val updatedItem = list[index].copy(isLiked = !updatedList[index].isLiked)
-            updatedList[index] = updatedItem
-            Log.d("update", updatedList[index].isLiked.toString())
+            if (list[index] is SearchImageEntity) {
+                val item = list[index] as SearchImageEntity
+                val imageUpdatedItem = item.copy(isLiked = !item.isLiked)
+                updatedList[index] = imageUpdatedItem
+            } else if (list[index] is SearchClipEntity) {
+                val item = list[index] as SearchClipEntity
+                val imageUpdatedItem = item.copy(isLiked = !item.isLiked)
+                updatedList[index] = imageUpdatedItem
+            }
+//            val updatedItem = list[index].copy(isLiked = !updatedList[index].isLiked)
+//            updatedList[index] = updatedItem
             _getSearchImageList.value = updatedList
         }
     }
@@ -48,8 +64,8 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         val removeIndex = currentList.indexOfFirst { it.uuid == removeUuid }
         if (removeIndex != -1) {
             val item = currentList[removeIndex]
-            val updatedItem = item.copy(isLiked = false)
-            currentList[removeIndex] = updatedItem
+//                val updatedItem = item.copy(isLiked = false)
+//                currentList[removeIndex] = updatedItem
             _getSearchImageList.value = currentList
 
         }
@@ -66,9 +82,7 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
         return index
     }
 
-
 }
-
 
 class SearchViewModelFactory : ViewModelProvider.Factory {
     private val repository = SearchRepositoryImpl(RetrofitClient.searchImageList)

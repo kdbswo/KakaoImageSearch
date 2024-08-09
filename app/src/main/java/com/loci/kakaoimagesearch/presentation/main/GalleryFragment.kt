@@ -1,22 +1,16 @@
 package com.loci.kakaoimagesearch.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.loci.kakaoimagesearch.data.remote.model.SearchClipEntity
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
 import com.loci.kakaoimagesearch.databinding.FragmentGalleryBinding
 import com.loci.kakaoimagesearch.util.convertStringToSearchImageEntity
-import com.loci.kakaoimagesearch.util.jsonListToString
-import java.util.Date
 
 
 class GalleryFragment : Fragment() {
@@ -53,9 +47,15 @@ class GalleryFragment : Fragment() {
             SearchListViewAdapter.OnItemClickListener {
             override fun onClick(v: View, position: Int) {
                 val data = galleryViewModel.returnGalleryData(position)
-                val setData = data?.copy(isLiked = true)
-                setData?.let { searchViewModel.removeLike(it.uuid) }
-                data?.let { galleryViewModel.removeGallery(it.uuid) }
+                if (data is SearchImageEntity) {
+                    val setData = data.copy(isLiked = true)
+                    searchViewModel.removeLike(setData.uuid)
+                    galleryViewModel.removeGallery(setData.uuid)
+                } else if (data is SearchClipEntity) {
+                    val setData = data.copy(isLiked = true)
+                   searchViewModel.removeLike(setData.uuid)
+                    galleryViewModel.removeGallery(setData.uuid)
+                }
             }
         })
 
@@ -64,8 +64,8 @@ class GalleryFragment : Fragment() {
 
         }
 
-
     }
+
 
     override fun onDestroyView() {
         _binding = null

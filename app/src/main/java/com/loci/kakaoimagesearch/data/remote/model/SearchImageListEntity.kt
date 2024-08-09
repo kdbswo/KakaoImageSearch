@@ -5,10 +5,10 @@ import java.util.Date
 data class SearchImageListEntity(val items: List<SearchImageEntity>)
 
 data class SearchImageEntity(
-    val uuid: String,
-    val searchType: String,
-    val thumbnailUrl: String,
-    val displaySitName: String,
-    val datetime: Date,
-    val isLiked: Boolean = false
-)
+    override val uuid: String,
+    override val searchType: String,
+    override val thumbnailUrl: String,
+    override val title: String,
+    override val datetime: Date,
+    override val isLiked: Boolean = false
+) : TotalEntity
