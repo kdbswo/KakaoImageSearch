@@ -29,7 +29,7 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
             clipList?.let { totalList.addAll(it) }
             Log.d("get", searchRepository.getSearchImageList(query, 1)?.items.toString())
 
-            totalList.sortBy { it.datetime }
+            totalList.sortByDescending { it.datetime }
             _getSearchImageList.value = totalList
         }
     }
