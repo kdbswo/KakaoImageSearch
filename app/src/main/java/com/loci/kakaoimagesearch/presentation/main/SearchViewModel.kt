@@ -29,7 +29,7 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
             clipList?.let { totalList.addAll(it) }
             Log.d("get", searchRepository.getSearchImageList(query, 1)?.items.toString())
 
-           totalList.sortBy { it.datetime }
+            totalList.sortBy { it.datetime }
             _getSearchImageList.value = totalList
         }
     }
@@ -66,11 +66,16 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
     fun removeLike(removeUuid: String) {
         val currentList = getSearchImageList.value?.toMutableList() ?: mutableListOf()
         val removeIndex = currentList.indexOfFirst { it.uuid == removeUuid }
-        if (removeIndex != -1) {
-            _getSearchImageList.value = currentList
+
+        val item = currentList[removeIndex]
+        if (item is SearchImageEntity) {
+            val imageUpdatedItem = item.copy(isLiked = !item.isLiked)
+            currentList[removeIndex] = imageUpdatedItem
+        } else if (item is SearchClipEntity) {
+            val clipUpdatedItem = item.copy(isLiked = !item.isLiked)
+            currentList[removeIndex] = clipUpdatedItem
         }
-
-
+        _getSearchImageList.value = currentList
     }
 
     fun getPosition(data: SearchImageEntity): Int? {
