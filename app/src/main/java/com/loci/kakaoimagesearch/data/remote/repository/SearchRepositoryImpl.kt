@@ -11,11 +11,8 @@ class SearchRepositoryImpl(
     override suspend fun getSearchImageList(query: String, page: Int): SearchImageListEntity? =
         remoteDataSource.getSearchImageList(query = query, page = page).toEntity()
 
-    override suspend fun getSearchClipList(query: String, page: Int): SearchClipListEntity? {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getSearchClipList(query: String, page: Int): SearchClipListEntity? =
+        remoteDataSource.getSearchClip(query = query, page = page).toEntity()
 
-//    override suspend fun getSearchClipList(query: String, page: Int): SearchClipListEntity? =
-//        remoteDataSource.getSearchClip(query=query, page=page)
 
 }

@@ -2,8 +2,10 @@ package com.loci.kakaoimagesearch.presentation.mapper
 
 import com.google.gson.Gson
 import com.loci.kakaoimagesearch.data.remote.model.ClipDocument
+import com.loci.kakaoimagesearch.data.remote.model.KakaoSearchClipListResponse
 import com.loci.kakaoimagesearch.data.remote.model.KakaoSearchImageListResponse
 import com.loci.kakaoimagesearch.data.remote.model.SearchClipEntity
+import com.loci.kakaoimagesearch.data.remote.model.SearchClipListEntity
 import com.loci.kakaoimagesearch.data.remote.model.SearchDocument
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageListEntity
@@ -12,6 +14,12 @@ import java.util.UUID
 fun KakaoSearchImageListResponse.toEntity() = documents?.let {
     SearchImageListEntity(
         items = it.asSearchImageEntity()
+    )
+}
+
+fun KakaoSearchClipListResponse.toEntity() = documents?.let {
+    SearchClipListEntity(
+        items = it.asSearchClipEntity()
     )
 }
 
