@@ -21,6 +21,6 @@ data class ClipDocument(
     @SerializedName("datetime") val datetime: Date, /* 문서 작성시간, ISO 8601 [YYYY]-[MM]-[DD]T[hh]:[mm]:[ss].000+[tz] */
     @SerializedName("play_time") val playTime: Int?, //플레이 타임
     @SerializedName("thumbnail_url") val thumbnailUrl: String?, //미리보기 이미지 URL
-    @SerializedName("author") val author: Int?, // 동영상 업로더
+    @SerializedName("author") val author: String?, // 동영상 업로더
 
 )

@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.loci.kakaoimagesearch.data.remote.model.SearchClipEntity
 import com.loci.kakaoimagesearch.data.remote.model.SearchImageEntity
 import com.loci.kakaoimagesearch.data.remote.model.TotalEntity
@@ -14,7 +13,6 @@ import com.loci.kakaoimagesearch.data.remote.repository.SearchRepositoryImpl
 import com.loci.kakaoimagesearch.network.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchRepository: SearchRepository) : ViewModel() {
@@ -23,14 +21,21 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
 
     fun getSearchImageList(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            _getSearchImageList.value = searchRepository.getSearchImageList(query, 1)?.items
+            val imageList = searchRepository.getSearchImageList(query, 1)?.items
+            val clipList = searchRepository.getSearchClipList(query, 1)?.items
+
+            val totalList : MutableList<TotalEntity> = mutableListOf()
+            imageList?.let { totalList.addAll(it) }
+            clipList?.let { totalList.addAll(it) }
             Log.d("get", searchRepository.getSearchImageList(query, 1)?.items.toString())
+
+            _getSearchImageList.value = totalList
         }
     }
 
     fun getSearchClipList(query: String) {
         CoroutineScope(Dispatchers.Main).launch {
-
+            _getSearchImageList.value = searchRepository.getSearchClipList(query, 1)?.items
         }
     }
 
@@ -52,28 +57,18 @@ class SearchViewModel(private val searchRepository: SearchRepository) : ViewMode
                 val imageUpdatedItem = item.copy(isLiked = !item.isLiked)
                 updatedList[index] = imageUpdatedItem
             }
-//            val updatedItem = list[index].copy(isLiked = !updatedList[index].isLiked)
-//            updatedList[index] = updatedItem
             _getSearchImageList.value = updatedList
         }
     }
 
     fun removeLike(removeUuid: String) {
         val currentList = getSearchImageList.value?.toMutableList() ?: mutableListOf()
-//        currentList.removeAll { it.uuid == removeUuid }
         val removeIndex = currentList.indexOfFirst { it.uuid == removeUuid }
         if (removeIndex != -1) {
-            val item = currentList[removeIndex]
-//                val updatedItem = item.copy(isLiked = false)
-//                currentList[removeIndex] = updatedItem
             _getSearchImageList.value = currentList
-
         }
 
 
-//        val index = currentList.indexOf(data)
-//        val currentItem = data.copy(isLiked = false)
-//        currentList[index] = currentItem
     }
 
     fun getPosition(data: SearchImageEntity): Int? {

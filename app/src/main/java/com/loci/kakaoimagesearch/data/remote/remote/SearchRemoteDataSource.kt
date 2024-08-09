@@ -19,6 +19,6 @@ interface SearchRemoteDataSource {
         @Query("query") query: String,
         @Query("sort") sort: String = "recency",
         @Query("page") page: Int,
-        @Query("size") size: Int = 80
+        @Query("size") size: Int = 30
     ): KakaoSearchClipListResponse
 }
