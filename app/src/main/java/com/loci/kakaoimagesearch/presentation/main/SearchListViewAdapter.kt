@@ -20,7 +20,7 @@ class SearchListViewAdapter : ListAdapter<TotalEntity, SearchListViewHolder>(dif
         fun bind(item: TotalEntity) {
             binding.apply {
                 Glide.with(itemView.context).load(item.thumbnailUrl).into(ivSearchThumbnail)
-                tvSearchTitle.text = item.title
+                tvSearchTitle.text = "["+ item.searchType +"]"+ item.title
                 tvSearchDate.text = dateToStringFormat(item.datetime)
                 ivIsLikedIcon.isVisible = item.isLiked
             }
